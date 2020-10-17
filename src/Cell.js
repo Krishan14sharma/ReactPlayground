@@ -1,5 +1,6 @@
 import React from "react";
-import {StateConstant} from "./MineSweeper";
+import msManager from "mine-sweeper-kt"
+import {FaBomb, FaFontAwesomeFlag} from "react-icons/fa"
 
 // todo apply common class to all cell elements, contextmenu etc
 
@@ -8,38 +9,38 @@ class Cell extends React.Component {
     render() {
         let view
         let cellState = this.props.state.state
-        let value = this.props.state.value
-        if (cellState === StateConstant.close) {
-            view = <EmptyCell onClick={this.props.onCellClick} id={1}/>
-        } else if (cellState === StateConstant.open) {
-            view = <ValueCell value={value}/>
-        } else {
-            view = <FlagCell/>
+        let value = this.props.state.state.getDisplayState()
+        let id = this.props.state.id
+
+        if (cellState instanceof msManager.core.Cell.State.Close) {
+            view = <CloseCell onClick={this.props.onCellClick}
+                              onCellContextClick={this.props.onCellContextClick}
+                              id={id}/>
+        } else if (cellState instanceof msManager.core.Cell.State.Open) {
+            view = <ValueCell value={value} id={id}/>
+        } else if (cellState instanceof msManager.core.Cell.State.Flag) {
+            view = <FlagCell id={id} onCellContextClick={this.props.onCellContextClick}/>
         }
         return view
     }
-}
-
-function handleEmptyCellContextClick(e) {
-    e.preventDefault()
 }
 
 function stopContextClick(event) {
     event.preventDefault()
 }
 
-const EmptyCell = ({onClick, id}) => {
+const CloseCell = ({onClick, onCellContextClick, id}) => {
     return <div style={cellStyle} onClick={e => onClick(e, id)}
-                onContextMenu={e => handleEmptyCellContextClick(e)}/>
+                onContextMenu={e => onCellContextClick(e, id)}/>
 }
-const FlagCell = () => {
-    return <div style={cellStyle} onContextMenu={event => stopContextClick(event)}>#</div>
+const FlagCell = ({id, onCellContextClick}) => {
+    return <div style={openCellStyle} onContextMenu={e => onCellContextClick(e, id)}><FaFontAwesomeFlag/></div>
 }
 
 const ValueCell = ({value}) => {
     if (value !== "-1") {
-        return <div style={cellStyle} onContextMenu={event => stopContextClick(event)}>{value}</div>
-    } else return <div style={cellStyle} onContextMenu={event => stopContextClick(event)}>!</div>
+        return <div style={openCellStyle} onContextMenu={event => stopContextClick(event)}>{value}</div>
+    } else return <div style={openCellStyle} onContextMenu={event => stopContextClick(event)}><FaBomb/></div>
 }
 
 export default Cell;
@@ -47,7 +48,21 @@ export default Cell;
 
 const cellStyle = {
     display: "flex",
-    backgroundColor: "#455A64",
+    backgroundColor: "#78909c",
+    padding: "10px",
+    fontFamily: "Arial",
+    width: "10px",
+    height: "10px",
+    outline: "1px solid #CFD8DC",
+    color: "#CFD8DC",
+    borderStyle: "outset",
+    justifyContent: "center",
+    alignItems: "center"
+}
+
+const openCellStyle = {
+    display: "flex",
+    backgroundColor: "#37474f",
     padding: "10px",
     fontFamily: "Arial",
     width: "10px",

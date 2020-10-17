@@ -7,6 +7,11 @@
     pointer-events: none;
 }
 
+.App-Title {
+    color: #6d4c41;
+    font-family: ".AppleSystemUIFont";
+}
+
 @media (prefers-reduced-motion: no-preference) {
     .App-logo {
         animation: App-logo-spin infinite 20s linear;
@@ -39,4 +44,29 @@
 
 .Cell {
     color: #CFD8DC;
+}
+
+.PrimaryButton {
+    outline: #009688 solid thin;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    background: white;
+    margin-top: 24px;
+}
+
+.PrimaryButton:hover {
+    background-color: #009688;
+    color: white;
+    cursor: pointer;
+}
+
+.PrimaryButton:active {
+    background-color: #00796b;
+}
+
+.Board {
+    display: inline-block;
 }
