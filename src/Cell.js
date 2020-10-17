@@ -39,8 +39,10 @@ const FlagCell = ({id, onCellContextClick}) => {
 
 const ValueCell = ({value}) => {
     if (value !== "-1") {
-        return <div style={openCellStyle} onContextMenu={event => stopContextClick(event)}>{value}</div>
-    } else return <div style={openCellStyle} onContextMenu={event => stopContextClick(event)}><FaBomb/></div>
+        return <div className="Cell" style={openCellStyle}
+                    onContextMenu={event => stopContextClick(event)}>{value}</div>
+    } else return <div className="Cell" style={openCellStyle} onContextMenu={event => stopContextClick(event)}><FaBomb/>
+    </div>
 }
 
 export default Cell;

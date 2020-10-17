@@ -7,7 +7,7 @@ class MineSweeper extends React.Component {
 
     constructor() {
         super();
-        let level = msManager.core.LEVEL.BEGINNER;
+        let level = msManager.core.LEVEL.INTERMEDIATE;
         let boardGenerator = new msManager.core.MineSweeperBoardGenerator();
         let mineSweeperBoard = new msManager.core.MineSweeperBoard(level, boardGenerator);
         mineSweeperBoard.mineSweeperBoardListener = {
