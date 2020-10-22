@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import MineSweeper from "./screen/MineSweeper";
+import {MineSweeperUI} from "./screen/MineSweeper";
 import {PrimaryButton} from "./component/Button";
 
 class App extends React.Component {
@@ -9,7 +9,7 @@ class App extends React.Component {
         return (
             <div className="App">
                 <h1 className="App-Title">MineSweeper Game</h1>
-                <MineSweeper/>
+                <MineSweeperUI/>
                 <PrimaryButton onClick={this.onRestartClick} msg={"Restart"}/>
             </div>
         );

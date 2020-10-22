@@ -23,7 +23,7 @@ declare module 'mine-sweeper-kt' {
 
             mineSweeperBoardListener: MineSweeperBoardListener
 
-            getCellGrid(): SweeperCell
+            getCellGrid(): SweeperCell[][]
 
             open(id: number): void;
 
@@ -33,17 +33,28 @@ declare module 'mine-sweeper-kt' {
 
         }
 
-
-        export class Cell {
-
-        }
-
         declare namespace Cell {
 
-            namespace State {
-                export const Close: CellState
-                export const Open: CellState
-                export const Flag: CellState
+            declare namespace State {
+                class Close implements CellState {
+                    value: Value
+                    correct?: boolean
+                    getDisplayState(): Value
+                }
+
+                class Open implements CellState {
+                    value: Value
+                    correct?: boolean
+
+                    getDisplayState(): Value
+                }
+
+                class Flag implements CellState{
+                    value: Value
+                    correct?: boolean
+
+                    getDisplayState(): Value
+                }
             }
 
             declare namespace Value {
