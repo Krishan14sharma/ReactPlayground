@@ -44,7 +44,7 @@ function render(cellGrid: SweeperCell[][],
 }
 
 export function MineSweeperUI() {
-    const [msBoard, setMsBoard] = useState(initMineSweeperBoard())
+    const [msBoard] = useState(initMineSweeperBoard())
     const [cellGrid, setCellGrid] = useState(msBoard.getCellGrid());
     msBoard.mineSweeperBoardListener = {
         onUnsafeMove: (openedCell, _) => {
