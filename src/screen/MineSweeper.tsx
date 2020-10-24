@@ -1,18 +1,22 @@
-import React, {useState} from "react";
-import {CellUi} from "../Cell";
-import board from "mine-sweeper-kt"
+import React, {useEffect, useState} from "react";
+import {CellUi} from "../component/Cell";
+import board, {core} from "mine-sweeper-kt"
 import "../App.css"
+import {useParams} from "react-router";
 
 interface SweeperCell {
     id: number;
     state: CellState;
+
     onCellClick(e: React.MouseEvent<HTMLDivElement>, id: number): void;
+
     onCellContextClick(e: React.MouseEvent<HTMLDivElement>, id: number): void;
 }
 
 interface CellState {
     value: Value;
     correct?: boolean;
+
     getDisplayState(): Value;
 }
 
@@ -20,9 +24,16 @@ interface Value {
 
 }
 
-function initMineSweeperBoard(): board.core.MineSweeperBoard {
-    let level = board.core.LEVEL.INTERMEDIATE;
-    let boardGenerator = new board.core.MineSweeperBoardGenerator();
+function initMineSweeperBoard(levelString: string): board.core.MineSweeperBoard {
+    let level
+    if (levelString === "beginner") {
+        level = board.core.LEVEL.BEGINNER
+    } else if (levelString === "hard") {
+        level = board.core.LEVEL.HARD
+    } else {
+        level = board.core.LEVEL.INTERMEDIATE
+    }
+    const boardGenerator = new board.core.MineSweeperBoardGenerator();
     return new board.core.MineSweeperBoard(level, boardGenerator)
 }
 
@@ -34,7 +45,7 @@ function render(cellGrid: SweeperCell[][],
         let row: JSX.Element[] = []
         array.forEach((cell) => {
             row.push(<td><CellUi id={cell.id} state={cell.state} onCellClick={onCellClick}
-                               onCellContextClick={onCellContextClick}/></td>)
+                                 onCellContextClick={onCellContextClick}/></td>)
         })
         grid.push(<tr>{row}</tr>)
     })
@@ -43,34 +54,28 @@ function render(cellGrid: SweeperCell[][],
     </div>
 }
 
-export function MineSweeperUI() {
-    const [msBoard] = useState(initMineSweeperBoard())
+
+export default function MineSweeperUI() {
+
+    let {levelParam}: any = useParams()
+    const [{msBoard}, setBoard] = useState({
+        msBoard: initMineSweeperBoard(levelParam)
+    })
     const [cellGrid, setCellGrid] = useState(msBoard.getCellGrid());
+
+    useEffect(() => {
+        let newBoard = initMineSweeperBoard(levelParam);
+        setBoard({msBoard: newBoard})
+        setCellGrid(newBoard.getCellGrid())
+    }, [levelParam])
     msBoard.mineSweeperBoardListener = {
         onUnsafeMove: (openedCell, _) => {
-            let map = cellGrid.map(cells => {
-                cells.map(cell => {
-                    if (cell.id === openedCell.id) {
-                        cell = openedCell
-                    }
-                    return cell
-                })
-                return cells
-            });
-            setCellGrid(map)
+            let grid = msBoard.getCellGrid();
+            setCellGrid([...grid]) // copying the array to trigger render method????
         },
         onSafeMove: (actedCell, _) => {
-            setCellGrid(
-                cellGrid.map(cells => {
-                    cells.map(cell => {
-                        if (cell.id === actedCell.id) {
-                            cell = actedCell
-                        }
-                        return cell
-                    })
-                    return cells
-                })
-            )
+            let grid = msBoard.getCellGrid();
+            setCellGrid([...grid])
         }
     }
 

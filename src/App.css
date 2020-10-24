@@ -70,3 +70,18 @@
     animation-duration: 500ms;
     animation-timing-function: linear;
 }
+
+ul li {
+    color: #282c34;
+    font-size: 24px;
+    padding-top: 4px;
+    list-style-type: none;
+}
+
+ul li:hover {
+    color: #607D8B;
+}
+
+ul li:active {
+    color: #455A64;
+}
