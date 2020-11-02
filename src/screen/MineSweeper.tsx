@@ -3,6 +3,8 @@ import {CellUi} from "../component/Cell";
 import board, {core} from "mine-sweeper-kt"
 import "../App.css"
 import {useParams} from "react-router";
+import 'reactjs-popup/dist/index.css';
+import {YouLose} from "../component/Popup/Popup";
 
 interface SweeperCell {
     id: number;
@@ -39,39 +41,48 @@ function initMineSweeperBoard(levelString: string): board.core.MineSweeperBoard 
 
 function render(cellGrid: SweeperCell[][],
                 onCellClick: (event: React.MouseEvent<HTMLDivElement>, id: number) => void,
-                onCellContextClick: (event: React.MouseEvent<HTMLDivElement>, id: number) => void): JSX.Element {
+                onCellContextClick: (event: React.MouseEvent<HTMLDivElement>, id: number) => void, lost: boolean, closeModal: Function): JSX.Element {
     let grid: JSX.Element[] = []
-    cellGrid.forEach((array) => {
+    cellGrid.forEach((array, index) => {
         let row: JSX.Element[] = []
         array.forEach((cell) => {
-            row.push(<td><CellUi id={cell.id} state={cell.state} onCellClick={onCellClick}
-                                 onCellContextClick={onCellContextClick}/></td>)
+            row.push(<td key={cell.id}><CellUi key={cell.id} id={cell.id} state={cell.state} onCellClick={onCellClick}
+                                               onCellContextClick={onCellContextClick}/></td>)
         })
-        grid.push(<tr>{row}</tr>)
+        grid.push(<tr key={index}>{row}</tr>)
     })
     return <div>
         <table className="Board">{grid}</table>
+        <YouLose open={lost} closeModal={closeModal}/>
     </div>
 }
 
 
 export default function MineSweeperUI() {
 
+    // todo avoid creating expensive objects
     let {levelParam}: any = useParams()
     const [{msBoard}, setBoard] = useState({
         msBoard: initMineSweeperBoard(levelParam)
     })
     const [cellGrid, setCellGrid] = useState(msBoard.getCellGrid());
+    const [lost, setLost] = useState(false)
 
     useEffect(() => {
         let newBoard = initMineSweeperBoard(levelParam);
         setBoard({msBoard: newBoard})
         setCellGrid(newBoard.getCellGrid())
     }, [levelParam])
+
+    const closeModal = () => {
+        console.log("lost called")
+        setLost(false)
+    }
     msBoard.mineSweeperBoardListener = {
         onUnsafeMove: (openedCell, _) => {
             let grid = msBoard.getCellGrid();
             setCellGrid([...grid]) // copying the array to trigger render method????
+            setLost(true)
         },
         onSafeMove: (actedCell, _) => {
             let grid = msBoard.getCellGrid();
@@ -99,5 +110,5 @@ export default function MineSweeperUI() {
         })
     }
 
-    return render(cellGrid, onCellClick, onCellContextClick)
+    return render(cellGrid, onCellClick, onCellContextClick, lost, closeModal)
 }

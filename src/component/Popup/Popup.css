@@ -1,0 +1,45 @@
+.modal {
+    font-size: 12px;
+}
+
+.header {
+    width: 100%;
+    border-bottom: 1px solid #37474f;
+    font-size: 24px;
+    text-align: center;
+    padding: 5px;
+    justify-content: center;
+    color: #6d4c41;
+}
+
+.content {
+    width: 100%;
+    padding: 10px 5px;
+    text-align: center;
+}
+
+.actions {
+    padding: 8px 8px;
+    flex-grow: 1;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-top: 16px;
+}
+
+.container {
+    display: flex;
+}
+
+.close {
+    cursor: pointer;
+    position: absolute;
+    display: block;
+    padding: 2px 5px;
+    line-height: 20px;
+    right: -10px;
+    top: -10px;
+    font-size: 24px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #cfcece;
+}
