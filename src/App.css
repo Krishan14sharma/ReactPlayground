@@ -1,5 +1,9 @@
 .App {
     text-align: center;
+    background: #CFD8DC;
+    width: 100%;
+    height: 100%;
+    position: absolute;
 }
 
 .App-logo {
@@ -8,8 +12,7 @@
 }
 
 .App-Title {
-    color: #6d4c41;
-    font-family: ".AppleSystemUIFont";
+    color: #37474f;
 }
 
 .App-header {
